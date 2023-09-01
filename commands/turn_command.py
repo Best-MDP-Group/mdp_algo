@@ -30,7 +30,7 @@ class TurnCommand(Command):
         self.tick()
         robot.turn(self.type_of_turn, self.left, self.right, self.reverse)
 
-    def apply_on_pos(self, curr_pos: Position):
+    def move(self, curr_pos: Position):
         assert isinstance(curr_pos, RobotPosition), "Cannot apply turn command on non-robot positions!"
 
         if self.left and not self.right and not self.reverse:

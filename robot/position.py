@@ -1,5 +1,5 @@
 import constants as constants
-from direction import Direction
+from robot.direction import Direction
 
 class Position:
     def __init__(self, x, y, direction: Direction = None):

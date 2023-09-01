@@ -1,6 +1,6 @@
 from commands.command import Command
 from robot.direction import Direction
-from robot.positioning import Position
+from robot.position import Position
 
 class StraightCommand(Command):
     ROBOT_SPEED_PER_SECOND = 100  # Adjust the value as needed
@@ -21,7 +21,7 @@ class StraightCommand(Command):
         distance = self.dist / self.total_ticks
         robot.straight(distance)
 
-    def apply_on_pos(self, curr_pos: Position):
+    def move(self, curr_pos: Position):
         if curr_pos.direction == Direction.RIGHT:
             curr_pos.x += self.dist
         elif curr_pos.direction == Direction.TOP:
