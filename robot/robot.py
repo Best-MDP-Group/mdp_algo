@@ -11,14 +11,37 @@ from commands.turn_command import TurnCommand
 
 
 class Robot:
-    def __init__(self, grid):
-        self.pos = RobotPosition(constants.ROBOT_SAFETY_DISTANCE, constants.ROBOT_SAFETY_DISTANCE, Direction.TOP, 90)
+    def __init__(self, screen, grid, x, y):
+        # self.pos = RobotPosition(constants.ROBOT_SAFETY_DISTANCE, constants.ROBOT_SAFETY_DISTANCE, Direction.TOP, 90)
+        self.pos = RobotPosition(x, y, Direction.TOP, 90)
         self._start_copy = self.pos.copy()
         self.hamiltonian = Hamiltonian(self, grid)
         self.path_hist = []
         self.__current_command = 0
         self.printed = False
-
+        self.x = x
+        self.y = y
+        self.screen = screen
+    
+    def draw_robot(self):
+        # Starting X and Y positions of the grid
+        grid_start_x = constants.TOP_BOTTOM_MARGIN
+        grid_start_y = constants.TOP_BOTTOM_MARGIN
+        new_x = grid_start_x + (self.pos.x // 10) * constants.CELL_SIZE
+        new_y = grid_start_y + (constants.GRID_SIZE - (self.pos.y // 10) - 1) * constants.CELL_SIZE - 2* constants.CELL_SIZE
+        pygame.draw.rect(self.screen, constants.YELLOW, (new_x, new_y, 3*constants.CELL_SIZE, 3*constants.CELL_SIZE))
+        #direction
+        border_color = constants.RED  
+        border_thickness = 5
+        if self.pos.direction == Direction.TOP:
+            pygame.draw.rect(self.screen, border_color, (new_x, new_y, 3*constants.CELL_SIZE, border_thickness))
+        elif self.pos.direction == Direction.BOTTOM:
+            pygame.draw.rect(self.screen, border_color, (new_x, new_y + 3*constants.CELL_SIZE - border_thickness, 3*constants.CELL_SIZE, border_thickness))
+        elif self.pos.direction == Direction.LEFT:
+            pygame.draw.rect(self.screen, border_color, (new_x, new_y, border_thickness, 3*constants.CELL_SIZE))
+        elif self.pos.direction == Direction.RIGHT:
+            pygame.draw.rect(self.screen, border_color, (new_x + 3*constants.CELL_SIZE - border_thickness, new_y, border_thickness, 3*constants.CELL_SIZE))
+    ##------------
     def get_current_pos(self):
         return self.pos
 
@@ -26,8 +49,8 @@ class Robot:
         return f"robot is at {self.pos}"
 
     def setCurrentPos(self, x, y, direction):
-        self.pos.x = constants.GRID_LENGTH - constants.GRID_CELL_LENGTH - (x * 10)
-        self.pos.y = y * 10
+        self.pos.x = x
+        self.pos.y = y 
         self.pos.direction = direction
 
     def setCurrentPosTask2(self, x, y, direction):
@@ -47,10 +70,11 @@ class Robot:
         return [command.convert_to_message() for command in self.hamiltonian.commands]
 
     def turn(self, type_of_command, left, right, rev):
-        TurnCommand(type_of_command, left, right, rev).apply_on_pos(self.pos)
+        TurnCommand(type_of_command, left, right, rev).move(self.pos)
 
     def straight(self, dist):
-        StraightCommand(dist).apply_on_pos(self.pos)
+        StraightCommand(dist).move(self.pos)
+    
 
     def draw_simple_hamiltonian_path(self, screen):
         prev = self._start_copy.xy_pygame()

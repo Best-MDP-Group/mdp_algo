@@ -14,3 +14,21 @@ OBSTACLE_SAFETY_MARGIN = 10
 
 # ROBOT ATTRIBUTES
 ROBOT_SAFETY_DISTANCE = 10
+YELLOW = (255,255,0)
+RED = (255,69,0)
+
+# BUTTONS
+BUTTON_LIST = [
+    {'path': './images/moveForward.png', 'x': SCREEN_WIDTH - 150, 'y': 100, 'width': 30, 'height': 30},
+    {'path': './images/moveBackward.png', 'x': SCREEN_WIDTH - 150, 'y': 190, 'width': 30, 'height': 30},
+    {'path': './images/slantForwardLeft.png', 'x': SCREEN_WIDTH - 180, 'y': 100, 'width': 30, 'height': 30},
+    {'path': './images/slantForwardRight.png', 'x': SCREEN_WIDTH - 120, 'y': 100, 'width': 30, 'height': 30},
+    {'path': './images/turnForwardLeft.png', 'x': SCREEN_WIDTH - 180, 'y': 130, 'width': 30, 'height': 30},
+    {'path': './images/turnForwardRight.png', 'x': SCREEN_WIDTH - 120, 'y': 130, 'width': 30, 'height': 30},
+    {'path': './images/turnReverseLeft.png', 'x': SCREEN_WIDTH - 180, 'y': 160, 'width': 30, 'height': 30},
+    {'path': './images/turnReverseRight.png', 'x': SCREEN_WIDTH - 120, 'y': 160, 'width': 30, 'height': 30},
+    {'path': './images/slantBackwardsLeft.png', 'x': SCREEN_WIDTH - 180, 'y': 190, 'width': 30, 'height': 30},
+    {'path': './images/slantBackwardsRight.png', 'x': SCREEN_WIDTH - 120, 'y': 190, 'width': 30, 'height': 30},
+]
+
+FRAMES = 50

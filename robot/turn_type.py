@@ -1,6 +1,6 @@
 from enum import Enum
 
 class TurnType(Enum):
-    SMALL = "Jockey by one cell, facing the same direction"
-    MEDIUM = "90 degree turn"
+    SMALL = "Slant"
+    MEDIUM = "Turn 90"
     LARGE = "180 degree turn"
