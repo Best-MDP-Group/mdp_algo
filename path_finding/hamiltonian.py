@@ -29,7 +29,6 @@ class Hamiltonian:
         def calc_distance(path):
             
             # Checks if Robot must turn Left or Right depending on the Target Position
-            
             def turn_right(robot_pos, target_pos):
                 if robot_pos.direction.value - target_pos.direction.value == -90:
                     if robot_pos.direction == Direction.TOP:
@@ -92,12 +91,10 @@ class Hamiltonian:
         
         simple = min(perms, key=calc_distance)
         
-        print()
+        print("Found Hamiltonian path\n")
+
         for ob in simple:
             print(f"\tObstacle {ob.number} at {ob.position.xy()} -> Robot should go to {ob.target.xy()}")
-        print()
-
-        print("Found shortest Hamiltonian path")
 
         return simple
 
