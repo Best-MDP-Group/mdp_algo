@@ -12,7 +12,6 @@ import constants
 
 class Robot:
     def __init__(self, screen, grid, x, y):
-        # self.pos = RobotPosition(constants.ROBOT_SAFETY_DISTANCE, constants.ROBOT_SAFETY_DISTANCE, Direction.TOP, 90)
         self.pos = RobotPosition(constants.ROBOT_SAFETY_DISTANCE, constants.ROBOT_SAFETY_DISTANCE, Direction.TOP, 90)
         self._start_copy = self.pos.copy()
         self.hamiltonian = Hamiltonian(self, grid)
