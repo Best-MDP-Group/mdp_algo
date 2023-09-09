@@ -15,5 +15,8 @@ class ScanCommand(Command):
 
         self.tick()
 
-    def convert_to_message(self):
+    def rpi_message(self):
         return f"P___{self.obj_index}"
+
+    def apply(self, curr_pos):
+        pass

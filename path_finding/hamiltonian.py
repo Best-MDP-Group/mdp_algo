@@ -8,11 +8,11 @@ from commands.turn_command import TurnCommand
 from robot.direction import Direction
 from grid import Grid
 from obstacle import Obstacle
-# from path_finding.modified_a_star import ModifiedAStar
+from path_finding.a_star import a_star
+import constants
 
 
 class Hamiltonian:
-    ROBOT_SPEED_PER_SECOND = 100  # Adjust the value as needed
 
     def __init__(self, robot, grid: Grid):
         self.robot = robot
@@ -98,7 +98,10 @@ class Hamiltonian:
 
         return simple
 
-    def compress_paths(self):
+    def compress_straights(self):
+        """
+            Check if Multiple Straight Commands can be compresultsed into one
+        """
         print("Compressing commands...", end="")
         index = 0
         new_commands = deque()
@@ -106,6 +109,7 @@ class Hamiltonian:
         while index < len(self.commands):
             command = self.commands[index]
 
+            # Combine multiple straight commands into one by summing up their lengths
             if isinstance(command, StraightCommand):
                 new_length = 0
                 while index < len(self.commands) and isinstance(self.commands[index], StraightCommand):
@@ -120,35 +124,50 @@ class Hamiltonian:
         self.commands = new_commands
         print("Done!")
 
-    # def plan_path(self):
-    #     print("-" * 40)
-    #     print("STARTING PATH COMPUTATION...")
-    #     self.simple_hamiltonian = self.compute_simple_hamiltonian_path()
-    #     print()
+    def get_path(self):
+        print("-" * 40)
+        print("Getting Simple Hamiltonian Path...")
+        self.simple_hamiltonian = self.compute_path()
+        print()
 
-    #     curr = self.robot.pos.copy()
-    #     for obstacle in self.simple_hamiltonian:
-    #         target = obstacle.get_robot_target_pos()
-    #         rerun = 0
-    #         res, cmd = ModifiedAStar(self.grid, self, curr, target, rerun).start_astar(True)
-    #         while res is None and rerun != 2:
-    #             print(f"No path found from {curr} to {obstacle}.")
-    #             print("Trying again...", end=" ")
-    #             rerun += 1
-    #             res, cmd = ModifiedAStar(self.grid, self, curr, target, rerun).start_astar(True)
-    #             if res:
-    #                 break
-    #         if res is None:
-    #             print(f"No path found from {curr} to {obstacle}.")
-    #         else:
-    #             print(f"PATH FOUND from {curr} to {obstacle}")
-    #             curr = res
-    #             self.commands.append(ScanCommand(constants.ROBOT_SCAN_TIME, obstacle.index))
+        curr = self.robot.pos.copy()
 
-    #     self.compress_paths()
+        # Following order of obstacles determined in Simple Hamiltonian
+        for obstacle in self.simple_hamiltonian:
+            
+            target = obstacle.get_robot_position()
+            
+            attempt = 0 # Tracking attempts
 
-    #     print("-" * 60)
-    #     for command in self.commands:
-    #         print(f"{command}")
-    #     print("-" * 60)
-    #     print()
+            result,commands = a_star(self.grid, self, curr, target, attempt).search(True)
+
+            while result is None and attempt != 2:
+                print(f"No path from {curr} to {obstacle}.")
+                print("Trying again...", end=" ")
+                
+                attempt += 1
+                result,commands = a_star(self.grid, self, curr, target, attempt).search(True)
+                
+                if result:
+                    break
+
+            if result is None:
+                print(f"No path from {curr} to {obstacle}.")
+
+            else:
+                print(f"Shortest Path found from {curr} to {obstacle}")
+                curr = result
+                self.commands.append(ScanCommand(constants.ROBOT_SCAN_DURATION, obstacle.number))
+
+        self.compress_straights()
+
+        print("-" * 40)
+
+        if len(self.commands) == 0:
+            print("No path found.")
+            return
+        for command in self.commands:
+            print(f"{command}")
+
+        print("-" * 40)
+        print()

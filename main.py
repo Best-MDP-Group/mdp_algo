@@ -33,7 +33,7 @@ grid = grid.Grid(screen,obstacles)
 robot = robot.Robot(screen,grid, 0, 0)
 print()
 hamiltonian = hamiltonian.Hamiltonian(robot,grid)
-hamiltonian.compute_path()
+hamiltonian.get_path()
 
 while running:
     for event in pygame.event.get():
@@ -46,8 +46,6 @@ while running:
     screen.fill((224, 235, 235))
     for button in button_list:
         draw_button(screen, button['path'], button['x'], button['y'], button['width'], button['height'], (0, 128, 255), (0, 0, 255))
-
-
     
     grid.draw_grid()
     robot.draw_robot()

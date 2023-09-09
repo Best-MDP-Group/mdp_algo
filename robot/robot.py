@@ -8,12 +8,12 @@ from robot.direction import Direction
 from robot.position import RobotPosition
 from path_finding.hamiltonian import Hamiltonian
 from commands.turn_command import TurnCommand
-
+import constants
 
 class Robot:
     def __init__(self, screen, grid, x, y):
         # self.pos = RobotPosition(constants.ROBOT_SAFETY_DISTANCE, constants.ROBOT_SAFETY_DISTANCE, Direction.TOP, 90)
-        self.pos = RobotPosition(x, y, Direction.TOP, 90)
+        self.pos = RobotPosition(constants.ROBOT_SAFETY_DISTANCE, constants.ROBOT_SAFETY_DISTANCE, Direction.TOP, 90)
         self._start_copy = self.pos.copy()
         self.hamiltonian = Hamiltonian(self, grid)
         self.path_hist = []

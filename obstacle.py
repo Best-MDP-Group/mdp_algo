@@ -198,3 +198,35 @@ class Obstacle:
         text_rect = text.get_rect()
         text_rect.center = (new_x + constants.CELL_SIZE // 2, new_y + constants.CELL_SIZE // 2)
         self.screen.blit(text, text_rect)
+
+    def is_safe(self, position, yolo):
+        """
+        Checks whether a given position is within the safety boundary of this obstacle.
+        If yes, means it can potentially hit the obstacle. We should avoid being inside the boundary
+        """
+
+        x_range, y_range = [], []
+
+        x_range = [position.x - constants.CELL_LENGTH,
+                   position.x, position.x + constants.CELL_LENGTH]
+        y_range = [position.y - constants.CELL_LENGTH,
+                   position.y, position.y + constants.CELL_LENGTH]
+
+        for x in x_range:
+            for y in y_range:
+                # cross
+                if yolo == 1 and not (position.x == x or position.y == y):
+                    continue
+
+                # 1x1
+                if yolo == 2 and not (position.x == x and position.y == y):
+                    continue
+
+                diffX = abs(self.position.x - x)
+                diffY = abs(self.position.y - y)
+
+                if (diffY < constants.OBSTACLE_SAFETY_MARGIN + 1) and \
+                        (diffX < constants.OBSTACLE_SAFETY_MARGIN + 1):
+                    return True
+
+        return False

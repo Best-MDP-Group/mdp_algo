@@ -15,5 +15,18 @@ class Command(ABC):
         self.tick()
 
     @abstractmethod
-    def convert_to_message(self):
+    def rpi_message(self):
+        """
+        Conversion to a message that is easy to send over the RPi.
+        """
+        pass
+
+    @abstractmethod
+    def apply(self, curr_pos):
+        """
+        Apply this command to a Position, such that its attributes will reflect the correct values
+        after the command is done.
+
+        This method should return itself.
+        """
         pass

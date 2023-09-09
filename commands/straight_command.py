@@ -33,7 +33,7 @@ class StraightCommand(Command):
 
         return self
 
-    def convert_to_message(self):
+    def rpi_message(self):
         if int(self.dist) < 0:
             if int(self.dist) > -100:
                 return f"SB0{-self.dist}"
@@ -44,3 +44,15 @@ class StraightCommand(Command):
                 return f"SF{self.dist}"
             else:
                 return f"SF0{self.dist}"
+
+    def apply(self, curr_pos):
+        if curr_pos.direction == Direction.RIGHT:
+            curr_pos.x += self.dist
+        elif curr_pos.direction == Direction.TOP:
+            curr_pos.y += self.dist
+        elif curr_pos.direction == Direction.BOTTOM:
+            curr_pos.y -= self.dist
+        else:
+            curr_pos.x -= self.dist
+
+        return self
