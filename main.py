@@ -7,7 +7,8 @@ from path_finding import hamiltonian
 from robot import robot
 from robot.position import Position, RobotPosition
 from robot.direction import Direction
-from buttons import draw_button, handle_button_click
+from buttons import draw_button, handle_button_click, visitedSquares
+
 
 pygame.init()
 # Set up fonts
@@ -47,6 +48,6 @@ while running:
     for button in button_list:
         draw_button(screen, button['path'], button['x'], button['y'], button['width'], button['height'], (0, 128, 255), (0, 0, 255))
     
-    grid.draw_grid()
+    grid.draw_grid(visitedSquares)
     robot.draw_robot()
     pygame.display.update()

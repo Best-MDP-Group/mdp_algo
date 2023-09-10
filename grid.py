@@ -17,9 +17,13 @@ class Grid:
         return grid_copy
 
     
-    def draw_grid(self):
+    def draw_grid(self, visitedSquares):
+        
         grid_start_x, grid_start_y = constants.TOP_BOTTOM_MARGIN, constants.TOP_BOTTOM_MARGIN
         grid_end_x, grid_end_y = grid_start_x + constants.GRID_PIXEL_SIZE, grid_start_y + constants.GRID_PIXEL_SIZE
+        
+        self.color_cells(visitedSquares, (0,255,0))
+
         for i in range(constants.GRID_SIZE + 1):
             start_x = grid_start_x + i * constants.CELL_SIZE
             start_y = grid_start_y + i * constants.CELL_SIZE
@@ -30,6 +34,7 @@ class Grid:
             pygame.draw.line(self.screen, color, (grid_start_x, start_y), (grid_end_x, start_y))
         for obstacle in self.obstacles:
             obstacle.draw_obstacle()
+        
 
     def is_valid(self, pos: Position, yolo=False):
         """
@@ -49,3 +54,10 @@ class Grid:
             print("Out of bounds " + str(pos.x) + " " + str(pos.y))
             return False
         return True
+    
+    def color_cells(self, cell_coordinates, color):
+        grid_start_x, grid_start_y = constants.TOP_BOTTOM_MARGIN, constants.TOP_BOTTOM_MARGIN
+        for x, y in cell_coordinates:
+            new_x = grid_start_x + (x // 10) * constants.CELL_SIZE
+            new_y = grid_start_y + (constants.GRID_SIZE - (y // 10) - 1) * constants.CELL_SIZE
+            pygame.draw.rect(self.screen, color, (new_x, new_y, constants.CELL_SIZE, constants.CELL_SIZE))

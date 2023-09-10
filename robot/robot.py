@@ -1,7 +1,6 @@
 import pygame
 import datetime
 import timer
-import constants
 from commands.straight_command import StraightCommand
 from commands.command import Command
 from robot.direction import Direction
