@@ -8,7 +8,9 @@ from robot import robot
 from robot.position import Position, RobotPosition
 from robot.direction import Direction
 from buttons import draw_button, handle_button_click, visitedSquares
-
+from commands.turn_command import TurnCommand
+from commands.straight_command import StraightCommand
+import time
 
 pygame.init()
 # Set up fonts
@@ -16,6 +18,14 @@ font = pygame.font.Font(None, 36)
 running = True
 screen = pygame.display.set_mode((constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT), pygame.RESIZABLE)
 pygame.display.set_caption("Simulation")
+
+
+def run_algo(commands):
+    for command in commands:
+        if isinstance(command, TurnCommand):
+            robot.turn(command.type_of_turn, command.left, command.right, command.reverse)
+        elif isinstance(command, StraightCommand):
+            robot.straight(command.dist)  
 
 
 # Create a Grid object
@@ -36,6 +46,12 @@ print()
 hamiltonian = hamiltonian.Hamiltonian(robot,grid)
 hamiltonian.get_path()
 
+robot.pos = RobotPosition(0, 0, Direction.TOP, 90)
+
+# robot.hamiltonian = hamiltonian.path
+# print("Drawing Simple Hamiltonian Path")
+
+count = 0
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -47,7 +63,31 @@ while running:
     screen.fill((224, 235, 235))
     for button in button_list:
         draw_button(screen, button['path'], button['x'], button['y'], button['width'], button['height'], (0, 128, 255), (0, 0, 255))
-    
+
+
     grid.draw_grid(visitedSquares)
-    robot.draw_robot()
-    pygame.display.update()
+    # robot.draw_simple_hamiltonian_path()
+    # robot.draw_robot()
+    print("Lol")
+    # run_algo(hamiltonian.commands)
+
+    
+
+    print(count)
+    
+    if count == 0:
+        for command in hamiltonian.commands:
+            print(command)
+            time.sleep(0.2)
+            if isinstance(command, TurnCommand):
+                robot.turn(command.type_of_turn, command.left, command.right, command.reverse)
+                robot.draw_robot()
+                pygame.display.update()
+            elif isinstance(command, StraightCommand):
+                robot.straight(command.dist)  
+                robot.draw_robot()
+                pygame.display.update()
+    count += 1
+        
+
+    

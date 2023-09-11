@@ -52,7 +52,7 @@ class Robot:
         self.pos.direction = direction
 
     def setCurrentPosTask2(self, x, y, direction):
-        self.pos.x = constants.TASK2_LENGTH - constants.GRID_CELL_LENGTH - (x * 10)
+        self.pos.x = constants.TASK2_LENGTH - constants.CELL_LENGTH - (x * 10)
         self.pos.y = y * 10
         self.pos.direction = direction
 
@@ -72,14 +72,45 @@ class Robot:
 
     def straight(self, dist):
         StraightCommand(dist).move(self.pos)
-    
 
-    def draw_simple_hamiltonian_path(self, screen):
-        prev = self._start_copy.xy_pygame()
-        for obs in self.hamiltonian.simple_hamiltonian:
-            target = obs.get_robot_target_pos().xy_pygame()
-            pygame.draw.line(screen, constants.DARK_GREEN, prev, target)
-            prev = target
+    # def draw_simple_hamiltonian_path(self):
+    #     print("Drawing...")
+    #     prev = self._start_copy.xy_pygame()
+        
+    #     for obs in self.hamiltonian:
+    #         # target = obs.get_robot_target_pos().xy_pygame()
+    #         target = obs.get_robot_position().xy_pygame()
+    #         print(prev,target)
+    #         pygame.draw.line(self.screen, constants.RED, prev, target)
+    #         prev = target
+
+    def draw_simple_hamiltonian_path(self):
+        halfAGridCell = (constants.CELL_LENGTH // 2) * \
+            constants.SCALING_FACTOR
+        obstacleList = []
+        y = ((constants.GRID_SIZE * 10 - self.get_current_pos().y) // constants.CELL_LENGTH)
+        x = self.get_current_pos().x // constants.CELL_LENGTH
+        # obstacleList.append(((x * constants.CELL_LENGTH * constants.SCALING_FACTOR) + halfAGridCell,
+        #                     (y * constants.CELL_LENGTH * constants.SCALING_FACTOR) + halfAGridCell))
+        obstacleList.append(((x * constants.CELL_LENGTH * constants.SCALING_FACTOR),
+                            (y * constants.CELL_LENGTH * constants.SCALING_FACTOR)))
+        
+        obstacleInOrder = self.hamiltonian
+        for obstacle in obstacleInOrder:
+            print(obstacle)
+            y = (constants.GRID_SIZE * 10 - obstacle.position.y) // constants.CELL_LENGTH
+            x = obstacle.position.x // constants.CELL_LENGTH
+            # obstacleList.append(((x * constants.CELL_LENGTH * constants.SCALING_FACTOR) + halfAGridCell,
+            #                     (y * constants.CELL_LENGTH * constants.SCALING_FACTOR) + halfAGridCell))
+            obstacleList.append(((x * constants.CELL_LENGTH * constants.SCALING_FACTOR),
+                                (y * constants.CELL_LENGTH * constants.SCALING_FACTOR) ))
+        for i in range(1, len(obstacleList)):
+            print((obstacleList[i - 1][0], obstacleList[i - 1]
+                  [1]), (obstacleList[i][0], obstacleList[i][1]))
+            
+            pygame.draw.lines(self.screen, constants.RED, True, [
+                              (obstacleList[i - 1][0], obstacleList[i - 1][1]), (obstacleList[i][0], obstacleList[i][1])], 3)
+            # pygame.display.update()
 
     def draw_self(self, screen):
         rot_image = pygame.transform.rotate(self.__image, -(90 - self.pos.angle))
@@ -87,9 +118,9 @@ class Robot:
         rect.center = self.pos.xy_pygame()
         screen.blit(rot_image, rect)
 
-    def draw_historic_path(self, screen):
+    def draw_historic_path(self):
         for dot in self.path_hist:
-            pygame.draw.circle(screen, constants.BLACK, dot, 2)
+            pygame.draw.circle(self.screen, constants.BLACK, dot, 2)
 
     def draw(self, screen):
         self.draw_self(screen)

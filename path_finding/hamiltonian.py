@@ -127,13 +127,13 @@ class Hamiltonian:
     def get_path(self):
         print("-" * 40)
         print("Getting Simple Hamiltonian Path...")
-        self.simple_hamiltonian = self.compute_path()
+        self.path = self.compute_path()
         print()
 
         curr = self.robot.pos.copy()
 
         # Following order of obstacles determined in Simple Hamiltonian
-        for obstacle in self.simple_hamiltonian:
+        for obstacle in self.path:
             
             target = obstacle.get_robot_position()
             
@@ -166,8 +166,9 @@ class Hamiltonian:
         if len(self.commands) == 0:
             print("No path found.")
             return
+            
         for command in self.commands:
-            print(f"{command}")
+            print(f"{command} - {command.rpi_message()}")
 
         print("-" * 40)
         print()

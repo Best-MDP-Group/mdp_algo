@@ -36,7 +36,8 @@ class Position:
         """
         Return the x, y coordinates in terms of Pygame coordinates. Useful for drawing on screen.
         """
-        return self.x, constants.GRID_LENGTH - self.y
+        # return self.x, constants.GRID_SIZE * 10 - self.y
+        return self.x, self.y
 
     def copy(self):
         """
