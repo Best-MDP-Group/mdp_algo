@@ -11,7 +11,7 @@ class StraightCommand(Command):
         self.dist = dist
 
     def __str__(self):
-        return f"StraightCommand(dist={self.dist}, {self.total_ticks} ticks)"
+        return f"StraightCommand(dist={self.dist}"
 
     def process_one_tick(self, robot):
         if self.total_ticks == 0:

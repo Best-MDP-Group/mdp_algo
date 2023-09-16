@@ -21,16 +21,27 @@ class Robot:
         self.y = y
         self.screen = screen
     
-    def draw_robot(self):
+    def draw_robot(self, scan=False):
         # Starting X and Y positions of the grid
         grid_start_x = constants.TOP_BOTTOM_MARGIN
         grid_start_y = constants.TOP_BOTTOM_MARGIN
         new_x = grid_start_x + (self.pos.x // 10) * constants.CELL_SIZE
         new_y = grid_start_y + (constants.GRID_SIZE - (self.pos.y // 10) - 1) * constants.CELL_SIZE - 2* constants.CELL_SIZE
-        pygame.draw.rect(self.screen, constants.YELLOW, (new_x, new_y, 3*constants.CELL_SIZE, 3*constants.CELL_SIZE))
-        #direction
+
+        center_x = grid_start_x + ((self.pos.x // 10) + 1) * constants.CELL_SIZE
+        center_y = grid_start_y + (constants.GRID_SIZE - ((self.pos.y // 10) - 1) - 1) * constants.CELL_SIZE - 2* constants.CELL_SIZE        
+        
+        if not scan:
+            pygame.draw.rect(self.screen, constants.YELLOW, (new_x, new_y, 3*constants.CELL_SIZE, 3*constants.CELL_SIZE))
+            pygame.draw.rect(self.screen, constants.BLUE, (center_x, center_y, constants.CELL_SIZE, constants.CELL_SIZE))
+
+        else:
+            pygame.draw.rect(self.screen, constants.RED, (new_x, new_y, 3*constants.CELL_SIZE, 3*constants.CELL_SIZE))
+            pygame.draw.rect(self.screen, constants.BLUE, (center_x, center_y, constants.CELL_SIZE, constants.CELL_SIZE))
+
         border_color = constants.RED  
         border_thickness = 5
+
         if self.pos.direction == Direction.TOP:
             pygame.draw.rect(self.screen, border_color, (new_x, new_y, 3*constants.CELL_SIZE, border_thickness))
         elif self.pos.direction == Direction.BOTTOM:
@@ -39,6 +50,7 @@ class Robot:
             pygame.draw.rect(self.screen, border_color, (new_x, new_y, border_thickness, 3*constants.CELL_SIZE))
         elif self.pos.direction == Direction.RIGHT:
             pygame.draw.rect(self.screen, border_color, (new_x + 3*constants.CELL_SIZE - border_thickness, new_y, border_thickness, 3*constants.CELL_SIZE))
+            
     ##------------
     def get_current_pos(self):
         return self.pos

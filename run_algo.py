@@ -1,6 +1,7 @@
 import time
 from commands.turn_command import TurnCommand
 from commands.straight_command import StraightCommand
+from commands.scan_command import ScanCommand
 from robot.robot import Robot
 import pygame
 from grid import Grid
@@ -25,7 +26,7 @@ def run_algo(robot,  grid, step_size = 10):
     for command in commands:
         if isinstance(command, TurnCommand):
             init = robot.get_current_pos()
-            clock.tick(2)
+            clock.tick(4)
             if command.type_of_turn == TurnType.SMALL:
                 visitedSquares += get_covered_slant_squares(robot.get_current_pos(), command.reverse)
             elif command.type_of_turn == TurnType.MEDIUM:
@@ -40,7 +41,7 @@ def run_algo(robot,  grid, step_size = 10):
         elif isinstance(command, StraightCommand):
             forwardCount = 0
             while forwardCount < abs(command.dist):
-                clock.tick(2)
+                clock.tick(4)
                 init = robot.get_current_pos()
                 if command.dist>0:
                     robot.straight(10)
@@ -52,5 +53,13 @@ def run_algo(robot,  grid, step_size = 10):
                 robot.draw_robot()
                 visitedSquares += [(init.x + i*step_size, init.y + j*step_size) for i in range(3) for j in range(3)]
                 pygame.display.update()
+
+        elif isinstance(command, ScanCommand):
+            robot.draw_robot(True)
+            clock.tick(2)
+            pygame.display.update()
+
+
+
 
     return 
