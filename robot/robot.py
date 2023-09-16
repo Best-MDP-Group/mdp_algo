@@ -50,6 +50,8 @@ class Robot:
             pygame.draw.rect(self.screen, border_color, (new_x, new_y, border_thickness, 3*constants.CELL_SIZE))
         elif self.pos.direction == Direction.RIGHT:
             pygame.draw.rect(self.screen, border_color, (new_x + 3*constants.CELL_SIZE - border_thickness, new_y, border_thickness, 3*constants.CELL_SIZE))
+
+        return (new_x, new_y)
             
     ##------------
     def get_current_pos(self):

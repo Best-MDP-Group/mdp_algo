@@ -38,7 +38,6 @@ BUTTON_LIST = [
     {'path': './images/ReverseRight.png', 'x': SCREEN_WIDTH - 120, 'y': 160, 'width': 30, 'height': 30},
     {'path': './images/JockeyReverseLeft.png', 'x': SCREEN_WIDTH - 180, 'y': 190, 'width': 30, 'height': 30},
     {'path': './images/JockeyReverseRight.png', 'x': SCREEN_WIDTH - 120, 'y': 190, 'width': 30, 'height': 30},
-
 ]
 
 START_BUTTON =     {
