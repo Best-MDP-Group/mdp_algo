@@ -27,16 +27,16 @@ RED = (255,69,0)
 # BUTTONS
 
 BUTTON_LIST = [
-    {'path': './images/moveForward.png', 'x': SCREEN_WIDTH - 150, 'y': 100, 'width': 30, 'height': 30},
-    {'path': './images/moveBackward.png', 'x': SCREEN_WIDTH - 150, 'y': 190, 'width': 30, 'height': 30},
-    {'path': './images/slantForwardLeft.png', 'x': SCREEN_WIDTH - 180, 'y': 100, 'width': 30, 'height': 30},
-    {'path': './images/slantForwardRight.png', 'x': SCREEN_WIDTH - 120, 'y': 100, 'width': 30, 'height': 30},
-    {'path': './images/turnForwardLeft.png', 'x': SCREEN_WIDTH - 180, 'y': 130, 'width': 30, 'height': 30},
-    {'path': './images/turnForwardRight.png', 'x': SCREEN_WIDTH - 120, 'y': 130, 'width': 30, 'height': 30},
-    {'path': './images/turnReverseLeft.png', 'x': SCREEN_WIDTH - 180, 'y': 160, 'width': 30, 'height': 30},
-    {'path': './images/turnReverseRight.png', 'x': SCREEN_WIDTH - 120, 'y': 160, 'width': 30, 'height': 30},
-    {'path': './images/slantBackwardsLeft.png', 'x': SCREEN_WIDTH - 180, 'y': 190, 'width': 30, 'height': 30},
-    {'path': './images/slantBackwardsRight.png', 'x': SCREEN_WIDTH - 120, 'y': 190, 'width': 30, 'height': 30},
+    {'path': './images/Forward.png', 'x': SCREEN_WIDTH - 150, 'y': 100, 'width': 30, 'height': 30},
+    {'path': './images/Reverse.png', 'x': SCREEN_WIDTH - 150, 'y': 190, 'width': 30, 'height': 30},
+    {'path': './images/JockeyForwardLeft.png', 'x': SCREEN_WIDTH - 180, 'y': 100, 'width': 30, 'height': 30},
+    {'path': './images/JockeyForwardRight.png', 'x': SCREEN_WIDTH - 120, 'y': 100, 'width': 30, 'height': 30},
+    {'path': './images/ForwardLeft.png', 'x': SCREEN_WIDTH - 180, 'y': 130, 'width': 30, 'height': 30},
+    {'path': './images/ForwardRight.png', 'x': SCREEN_WIDTH - 120, 'y': 130, 'width': 30, 'height': 30},
+    {'path': './images/ReverseLeft.png', 'x': SCREEN_WIDTH - 180, 'y': 160, 'width': 30, 'height': 30},
+    {'path': './images/ReverseRight.png', 'x': SCREEN_WIDTH - 120, 'y': 160, 'width': 30, 'height': 30},
+    {'path': './images/JockeyReverseLeft.png', 'x': SCREEN_WIDTH - 180, 'y': 190, 'width': 30, 'height': 30},
+    {'path': './images/JockeyReverseRight.png', 'x': SCREEN_WIDTH - 120, 'y': 190, 'width': 30, 'height': 30},
 
 ]
 

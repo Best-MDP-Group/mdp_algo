@@ -25,7 +25,7 @@ def run_algo(robot,  grid, step_size = 10):
     for command in commands:
         if isinstance(command, TurnCommand):
             init = robot.get_current_pos()
-            clock.tick(5)
+            clock.tick(2)
             if command.type_of_turn == TurnType.SMALL:
                 visitedSquares += get_covered_slant_squares(robot.get_current_pos(), command.reverse)
             elif command.type_of_turn == TurnType.MEDIUM:
@@ -40,7 +40,7 @@ def run_algo(robot,  grid, step_size = 10):
         elif isinstance(command, StraightCommand):
             forwardCount = 0
             while forwardCount < abs(command.dist):
-                clock.tick(5)
+                clock.tick(2)
                 init = robot.get_current_pos()
                 if command.dist>0:
                     robot.straight(10)

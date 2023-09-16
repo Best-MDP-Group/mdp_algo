@@ -230,10 +230,10 @@ class a_star:
 
             command.apply(p)
 
-            print(f"Checking {command} from {p.x},{p.y} to {p.direction}")
+            # print(f"Checking {command} from {p.x},{p.y} to {p.direction}")
             
-            if not (self.grid.is_valid(p, self.yolo)):
-                print(f"Invalid position: {p.x},{p.y} to {p.direction}")
+            # if not (self.grid.is_valid(p, self.yolo)):
+            #     print(f"Invalid position: {p.x},{p.y} to {p.direction}")
                 
             if self.grid.is_valid(p) and (after := p.xy()+(p.get_dir(),)):
                 return after, p

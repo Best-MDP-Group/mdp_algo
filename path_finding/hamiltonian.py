@@ -29,8 +29,8 @@ class Hamiltonian:
         def calc_distance(path):
             
             # Checks if Robot must turn Left or Right depending on the Target Position
-            def turn_right(robot_pos, target_pos):
-                if robot_pos.direction.value - target_pos.direction.value == -90:
+            def check_turn(robot_pos, target_pos):
+                if robot_pos.direction.value - target_pos.direction.value == -90: # left turn
                     if robot_pos.direction == Direction.TOP:
                         return True if target_pos.x < robot_pos.x else False
                     if robot_pos.direction == Direction.BOTTOM:
@@ -39,7 +39,7 @@ class Hamiltonian:
                         return True if target_pos.y < robot_pos.y else False
                     if robot_pos.direction == Direction.RIGHT:
                         return True if target_pos.y > robot_pos.y else False
-                else:
+                else: # turn right
                     if robot_pos.direction == Direction.TOP:
                         return True if target_pos.x > robot_pos.x else False
                     if robot_pos.direction == Direction.BOTTOM:
@@ -57,11 +57,13 @@ class Hamiltonian:
             
             def get_weight(source_pos, dest_pos, is_first) -> int:
                 if source_pos.direction.value - dest_pos.direction.value == 0:
-                    weight = 1 if is_first else 5
+                    weight = 1 if is_first else 5 #facing each other
                 elif abs(source_pos.direction.value - dest_pos.direction.value) == 180:
-                    weight = 3
+                    weight = 3 #opposite directions
                 else:
-                    weight = 1.5 if turn_right(source_pos, dest_pos) else 7
+                    weight = 1.5 if check_turn(source_pos, dest_pos) else 7
+
+                # print(f"Weight from {source_pos} to {dest_pos} is {weight}")
                 return weight
 
 
@@ -74,6 +76,7 @@ class Hamiltonian:
             distance = 0
             multiplier = 1
             targets = [self.robot.pos.xy()]
+
             for obstacle in path:
                 targets.append(obstacle.target.xy())
 
@@ -82,9 +85,12 @@ class Hamiltonian:
                     multiplier = get_weight(self.robot.pos, path[i].target, True)
                 else:
                     multiplier = get_weight(path[i - 1].target, path[i].target, False)
-                distance += multiplier * (math.sqrt(((targets[i][0] - targets[i + 1][0])**2) +
-                                                ((targets[i][1] - targets[i + 1][1])**2)))
 
+                distance += multiplier * euclidean_distance(targets[i][0], targets[i][1], targets[i + 1][0], targets[i + 1][1])
+                print(f"Multiplier for {targets[i]} to {targets[i + 1]} is {multiplier}")
+                print(f"Distance from {targets[i]} to {targets[i + 1]} is {euclidean_distance(targets[i][0], targets[i][1], targets[i + 1][0], targets[i + 1][1])}")
+            
+            print(f"Distance for {path} is {distance}")
             return distance
 
         print("Getting distance for every permutation")
@@ -142,7 +148,7 @@ class Hamiltonian:
             result,commands = a_star(self.grid, self, curr, target, attempt).search(True)
 
             while result is None and attempt != 2:
-                print(f"No path from {curr} to {obstacle}.")
+                print(f"No path from {curr} to {obstacle.number}.")
                 print("Trying again...", end=" ")
                 
                 attempt += 1
@@ -152,7 +158,7 @@ class Hamiltonian:
                     break
 
             if result is None:
-                print(f"No path from {curr} to {obstacle}.")
+                print(f"No path from {curr} to {obstacle.number}.")
 
             else:
                 print(f"Shortest Path found from {curr} to {obstacle}")

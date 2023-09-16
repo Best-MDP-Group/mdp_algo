@@ -96,49 +96,49 @@ def handle_button_click( pos, robot, button_list):
     # print(init.x,init.y)
     for i, button in enumerate(button_list):
         if button['x'] <= x <= button['x'] + button['width'] and button['y'] <= y <= button['y'] + button['height']:
-            if button['path'] == './images/moveForward.png':
+            if button['path'] == './images/Forward.png':
                 robot.straight(10)
                 # print(robot.get_current_pos())
                 # print(visitedSquares)
-            elif button['path'] == './images/moveBackward.png':
+            elif button['path'] == './images/Reverse.png':
                 robot.straight(-10)
                 print(robot.get_current_pos())
-            elif button['path'] == './images/slantForwardLeft.png':
+            elif button['path'] == './images/JockeyForwardLeft.png':
                 slant_squares = get_covered_slant_squares(robot.get_current_pos(), False)
                 robot.turn(TurnType.SMALL, True, False,
                         False)
                 print(robot.get_current_pos())
-            elif button['path'] == './images/slantForwardRight.png':
+            elif button['path'] == './images/JockeyForwardRight.png':
                 slant_squares = get_covered_slant_squares(robot.get_current_pos(), False)
                 robot.turn(TurnType.SMALL, False, True,
                         False)
                 # print(robot.get_current_pos())
-            elif button['path'] == './images/turnForwardLeft.png':
+            elif button['path'] == './images/ForwardLeft.png':
                 turnSquares = get_covered_turn_squares(robot.get_current_pos(), False)
                 robot.turn(TurnType.MEDIUM, True, False,
                         False)
                 # print(robot.get_current_pos())
-            elif button['path'] == './images/turnForwardRight.png':
+            elif button['path'] == './images/ForwardRight.png':
                 turnSquares = get_covered_turn_squares(robot.get_current_pos(), False)
                 robot.turn(TurnType.MEDIUM, False, True,
                         False)
                 # print(robot.get_current_pos())
-            elif button['path'] == './images/turnReverseLeft.png':
+            elif button['path'] == './images/ReverseLeft.png':
                 turnSquares = get_covered_turn_squares(robot.get_current_pos(), True)
                 robot.turn(TurnType.MEDIUM, True, False,
                         True)
                 # print(robot.get_current_pos())
-            elif button['path'] == './images/turnReverseRight.png':
+            elif button['path'] == './images/ReverseRight.png':
                 turnSquares = get_covered_turn_squares(robot.get_current_pos(), True)
                 robot.turn(TurnType.MEDIUM, False, True,
                         True)
                 # print(robot.get_current_pos())
-            elif button['path'] == './images/slantBackwardsLeft.png':
+            elif button['path'] == './images/JockeyReverseLeft.png':
                 slant_squares = get_covered_slant_squares(robot.get_current_pos(), True)
                 robot.turn(TurnType.SMALL, True, False,
                         True)
                 # print(robot.get_current_pos())
-            elif button['path'] == './images/slantBackwardsRight.png':
+            elif button['path'] == './images/JockeyReverseRight.png':
                 slant_squares = get_covered_slant_squares(robot.get_current_pos(), True)
                 robot.turn(TurnType.SMALL, False, True,
                         True)
