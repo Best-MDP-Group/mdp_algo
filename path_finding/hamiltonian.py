@@ -55,13 +55,16 @@ class Hamiltonian:
             # If they have opposite directions, the multiplier is 3. 
             # If they require a left/right turn, the multiplier is 1.5 or 7 depending on whether it is a "natural" turn direction or not.
             
+            # Multiplier for 5 (120, 40) to 3 (150, 90) is 3, Euclidean = 58.3
+            # Multiplier for (120, 40) to (150, 120) is 1.5, Euclidean = 85
+
             def get_weight(source_pos, dest_pos, is_first) -> int:
                 if source_pos.direction.value - dest_pos.direction.value == 0:
                     weight = 1 if is_first else 5 #facing each other
                 elif abs(source_pos.direction.value - dest_pos.direction.value) == 180:
-                    weight = 3 #opposite directions
+                    weight = 1.5 #opposite directions
                 else:
-                    weight = 1.5 if check_turn(source_pos, dest_pos) else 7
+                    weight = 3 if check_turn(source_pos, dest_pos) else 7
 
                 # print(f"Weight from {source_pos} to {dest_pos} is {weight}")
                 return weight
@@ -87,10 +90,10 @@ class Hamiltonian:
                     multiplier = get_weight(path[i - 1].target, path[i].target, False)
 
                 distance += multiplier * euclidean_distance(targets[i][0], targets[i][1], targets[i + 1][0], targets[i + 1][1])
-                print(f"Multiplier for {targets[i]} to {targets[i + 1]} is {multiplier}")
-                print(f"Distance from {targets[i]} to {targets[i + 1]} is {euclidean_distance(targets[i][0], targets[i][1], targets[i + 1][0], targets[i + 1][1])}")
+            #     print(f"Multiplier for {targets[i]} to {targets[i + 1]} is {multiplier}")
+            #     print(f"Euclidean Distance from {targets[i]} to {targets[i + 1]} is {euclidean_distance(targets[i][0], targets[i][1], targets[i + 1][0], targets[i + 1][1])}")
             
-            print(f"Distance for {path} is {distance}")
+            # print(f"Weighted Distance for {path} is {distance}")
             return distance
 
         print("Getting distance for every permutation")
@@ -139,6 +142,11 @@ class Hamiltonian:
         curr = self.robot.pos.copy()
 
         # Following order of obstacles determined in Simple Hamiltonian
+        targets = []
+        
+        for obstacle in self.simple_hamiltonian:
+            targets.append(obstacle.get_robot_position())
+
         for obstacle in self.simple_hamiltonian:
             
             target = obstacle.get_robot_position()
@@ -161,7 +169,7 @@ class Hamiltonian:
                 print(f"No path from {curr} to {obstacle.number}.")
 
             else:
-                print(f"Shortest Path found from {curr} to {obstacle}")
+                print(f"Shortest Path found from {curr} to {obstacle.number}")
                 curr = result
                 self.commands.append(ScanCommand(constants.ROBOT_SCAN_DURATION, obstacle.number))
 

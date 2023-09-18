@@ -56,6 +56,8 @@ def run_algo(robot,  grid, step_size = 10):
     visitedSquares = constants.INIT_VISITED
     robot.setCurrentPos(0, 0, Direction.TOP)
 
+
+
     robot.draw_robot() 
     for command in commands:
         
