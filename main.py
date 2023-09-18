@@ -43,7 +43,7 @@ data = client_socket.recv(2048)
 print(f"Received: {data.decode('utf-8')}")
 
 obs = data.decode('utf-8')
-print(f"Received: {obs}")
+print(f"Received: {data}")
 
 # # Create a Grid object
 # obstacles = [obstacle.Obstacle(screen,Position(50,50, Direction.TOP),1), 
@@ -118,11 +118,14 @@ def get_commands(commands):
 
 commands_str = get_commands(hamiltonian.commands)
 
+# "target": "AND"
 rpi_commands = {
+  "target": "STM", 
   "cat": "path",
   "value": {
     "commands": commands_str
-  }
+  },
+
 }
 
 rpi_commands_json = json.dumps(rpi_commands)
