@@ -16,15 +16,6 @@ import json
 
 
 # Send the Commands to RPI
-
-
-pygame.init()
-# Set up fonts
-font = pygame.font.Font(None, 36)
-running = True
-screen = pygame.display.set_mode((constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT), pygame.RESIZABLE)
-pygame.display.set_caption("Simulation")
-
 # RPI Connection
 # Configure the client
 server_ip = "192.168.31.31"  # Replace with your PC's IP address
@@ -34,6 +25,7 @@ server_port = 8001  # Use the same port number as on your PC
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Connect to the server
+print("Waiting to Connect to RPI")
 client_socket.connect((server_ip, server_port))
 
 print("Connected")
@@ -44,6 +36,13 @@ print(f"Received: {data.decode('utf-8')}")
 
 obs = data.decode('utf-8')
 print(f"Received: {data}")
+
+pygame.init()
+# Set up fonts
+font = pygame.font.Font(None, 36)
+running = True
+screen = pygame.display.set_mode((constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT), pygame.RESIZABLE)
+pygame.display.set_caption("Simulation")
 
 # # Create a Grid object
 # obstacles = [obstacle.Obstacle(screen,Position(50,50, Direction.TOP),1), 

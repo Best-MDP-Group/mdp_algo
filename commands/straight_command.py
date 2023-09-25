@@ -36,14 +36,14 @@ class StraightCommand(Command):
     def rpi_message(self):
         if int(self.dist) < 0:
             if int(self.dist) > -100:
-                return f"SB0{-self.dist}"
+                return f"s0{-self.dist}"
             else:
-                return f"SB{-self.dist}"
+                return f"s{-self.dist}"
         else:
             if int(self.dist) >= 100:
-                return f"SF{self.dist}"
+                return f"w{self.dist}"
             else:
-                return f"SF0{self.dist}"
+                return f"w0{self.dist}"
 
     def apply(self, curr_pos):
         if curr_pos.direction == Direction.RIGHT:
