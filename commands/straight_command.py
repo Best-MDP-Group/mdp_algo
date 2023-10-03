@@ -36,7 +36,7 @@ class StraightCommand(Command):
     def rpi_message(self):
         if int(self.dist) < 0:
             if int(self.dist) > -100:
-                return f"SB{-self.dist}"
+                return f"SB0{-self.dist}"
             else:
                 return f"SB{-self.dist}"
         else:
