@@ -10,6 +10,7 @@ from robot.position import Position, RobotPosition
 from robot.direction import Direction
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/get_path', methods=['POST'])
 def get_path():
