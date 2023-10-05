@@ -8,6 +8,7 @@ from path_finding import hamiltonian
 from robot import robot
 from robot.position import Position, RobotPosition
 from robot.direction import Direction
+from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
@@ -36,4 +37,4 @@ def get_path():
     return jsonify(message_to_rpi)
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0",port=5000,debug=False)
+    app.run(host="0.0.0.0",port=3000,debug=False)
