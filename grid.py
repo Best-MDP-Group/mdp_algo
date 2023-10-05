@@ -31,4 +31,5 @@ class Grid:
                         
             # print("Out of bounds " + str(pos.x) + " " + str(pos.y))
             return False
+            
         return True
