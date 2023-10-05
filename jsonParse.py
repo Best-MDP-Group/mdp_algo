@@ -1,5 +1,4 @@
 import json
-import pygame
 import obstacle
 import constants
 from robot.position import Position, RobotPosition
@@ -23,7 +22,7 @@ def parse_json(json_str):
     return None
 
 # convert JSON file to obstacles object using specified format
-def convert_json(screen, json):
+def convert_json(json):
     new_obstacles = []
     cat, obstacles, mode = json
     for dict in obstacles:
@@ -40,7 +39,7 @@ def convert_json(screen, json):
             new_d = Direction.LEFT
         
         new_obstacles.append(
-            obstacle.Obstacle(screen,Position(new_x,new_y, new_d),dict['id']))
+            obstacle.Obstacle(Position(new_x,new_y, new_d),dict['id']))
     
     return new_obstacles
 

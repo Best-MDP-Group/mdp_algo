@@ -1,6 +1,5 @@
 import math
 from typing import List, Tuple
-
 from queue import PriorityQueue
 from robot.position import RobotPosition
 from robot.direction import Direction

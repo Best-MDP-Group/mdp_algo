@@ -1,14 +1,12 @@
-import pygame
 import math
 import constants
 from robot.position import Position, RobotPosition
 from robot.direction import Direction
 
 class Obstacle:
-    def __init__(self, screen, position,number):
+    def __init__(self, position,number):
         self.position = position
         self.target = self.get_robot_position()
-        self.screen = screen
         self.number = number
         
     def get_robot_position(self):
@@ -165,39 +163,6 @@ class Obstacle:
                 return RobotPosition(self.position.x + constants.OBSTACLE_SAFETY_MARGIN*2 + constants.OBSTACLE_LENGTH,
                                      self.position.y, Direction.LEFT)
 
-
-    def draw_obstacle(self):
-        # Starting X and Y positions of the grid
-        grid_start_x = constants.TOP_BOTTOM_MARGIN
-        grid_start_y = constants.TOP_BOTTOM_MARGIN
-        
-        # Calculating the position of the obstacle on the screen
-        new_x = grid_start_x + (self.position.x // 10) * constants.CELL_SIZE
-        new_y = grid_start_y + (constants.GRID_SIZE - (self.position.y // 10) - 1) * constants.CELL_SIZE
-
-        pygame.draw.rect(self.screen, constants.BLUE, (new_x, new_y, constants.CELL_SIZE, constants.CELL_SIZE), 2)
-
-        # Draw Direction 
-        if self.position.get_dir() == Direction.RIGHT:  # East
-            pygame.draw.line(self.screen, constants.PINK, (new_x + constants.CELL_SIZE, new_y + 1),
-                            (new_x + constants.CELL_SIZE, new_y + constants.CELL_SIZE - 1), 2)
-        elif self.position.get_dir() == Direction.TOP:  # North
-            pygame.draw.line(self.screen, constants.PINK, (new_x + 1, new_y),
-                            (new_x + constants.CELL_SIZE - 1, new_y), 2)
-        elif self.position.get_dir() == Direction.LEFT:  # West
-            pygame.draw.line(self.screen, constants.PINK, (new_x, new_y + 1),
-                            (new_x, new_y + constants.CELL_SIZE - 1), 2)
-        elif self.position.get_dir() == Direction.BOTTOM:  # South
-            pygame.draw.line(self.screen, constants.PINK, (new_x + 1, new_y + constants.CELL_SIZE),
-                     (new_x + constants.CELL_SIZE - 1, new_y + constants.CELL_SIZE), 2)
-
-
-        # Draw Obstacle Number
-        font = pygame.font.Font(None, 36)
-        text = font.render(str(self.number), True, (0,0,255))
-        text_rect = text.get_rect()
-        text_rect.center = (new_x + constants.CELL_SIZE // 2, new_y + constants.CELL_SIZE // 2)
-        self.screen.blit(text, text_rect)
 
     def is_safe(self, position, yolo):
         """

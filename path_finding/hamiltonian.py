@@ -10,7 +10,6 @@ from grid import Grid
 from obstacle import Obstacle
 from path_finding.a_star import a_star
 import constants
-import matplotlib.pyplot as plt
 
 class Hamiltonian:
 
@@ -112,21 +111,6 @@ class Hamiltonian:
 
         for ob in simple:
             print(f"\tObstacle {ob.number} at {ob.position.xy()} -> Robot should go to {ob.target.xy()}")
-
-        distances = []
-        paths = []
-
-        # sort self.all_paths by its value
-        paths, distances = zip(*sorted(self.all_paths.items(), key=lambda item: item[1]))
-
-        paths = [str([y.number for y in x]) for x in paths]
-        print(distances[0],paths[0])
-        plt.plot(paths[:5], distances[:5])
-        # label the y axis as distance and the x axis as path
-        plt.ylabel("Distance")
-        plt.xlabel("Path")
-
-        plt.show()
 
         return simple
 

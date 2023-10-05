@@ -1,4 +1,3 @@
-import pygame
 import datetime
 import timer
 from commands.straight_command import StraightCommand
@@ -10,7 +9,7 @@ from commands.turn_command import TurnCommand
 import constants
 
 class Robot:
-    def __init__(self, screen, grid, x, y):
+    def __init__(self, grid, x, y):
         self.pos = RobotPosition(constants.ROBOT_SAFETY_DISTANCE, constants.ROBOT_SAFETY_DISTANCE, Direction.TOP, 90)
         self._start_copy = self.pos.copy()
         self.hamiltonian = Hamiltonian(self, grid)
@@ -19,39 +18,6 @@ class Robot:
         self.printed = False
         self.x = x
         self.y = y
-        self.screen = screen
-    
-    def draw_robot(self, scan=False):
-        # Starting X and Y positions of the grid
-        grid_start_x = constants.TOP_BOTTOM_MARGIN
-        grid_start_y = constants.TOP_BOTTOM_MARGIN
-        new_x = grid_start_x + (self.pos.x // 10) * constants.CELL_SIZE
-        new_y = grid_start_y + (constants.GRID_SIZE - (self.pos.y // 10) - 1) * constants.CELL_SIZE - 2* constants.CELL_SIZE
-
-        center_x = grid_start_x + ((self.pos.x // 10) + 1) * constants.CELL_SIZE
-        center_y = grid_start_y + (constants.GRID_SIZE - ((self.pos.y // 10) - 1) - 1) * constants.CELL_SIZE - 2* constants.CELL_SIZE        
-        
-        if not scan:
-            pygame.draw.rect(self.screen, constants.YELLOW, (new_x, new_y, 3*constants.CELL_SIZE, 3*constants.CELL_SIZE))
-            pygame.draw.rect(self.screen, constants.BLUE, (center_x, center_y, constants.CELL_SIZE, constants.CELL_SIZE))
-
-        else:
-            pygame.draw.rect(self.screen, constants.RED, (new_x, new_y, 3*constants.CELL_SIZE, 3*constants.CELL_SIZE))
-            pygame.draw.rect(self.screen, constants.BLUE, (center_x, center_y, constants.CELL_SIZE, constants.CELL_SIZE))
-
-        border_color = constants.RED  
-        border_thickness = 5
-
-        if self.pos.direction == Direction.TOP:
-            pygame.draw.rect(self.screen, border_color, (new_x, new_y, 3*constants.CELL_SIZE, border_thickness))
-        elif self.pos.direction == Direction.BOTTOM:
-            pygame.draw.rect(self.screen, border_color, (new_x, new_y + 3*constants.CELL_SIZE - border_thickness, 3*constants.CELL_SIZE, border_thickness))
-        elif self.pos.direction == Direction.LEFT:
-            pygame.draw.rect(self.screen, border_color, (new_x, new_y, border_thickness, 3*constants.CELL_SIZE))
-        elif self.pos.direction == Direction.RIGHT:
-            pygame.draw.rect(self.screen, border_color, (new_x + 3*constants.CELL_SIZE - border_thickness, new_y, border_thickness, 3*constants.CELL_SIZE))
-
-        return (new_x, new_y)
             
     ##------------
     def get_current_pos(self):
@@ -86,29 +52,6 @@ class Robot:
 
     def straight(self, dist):
         StraightCommand(dist).move(self.pos)
-    
-
-    def draw_simple_hamiltonian_path(self, screen):
-        prev = self._start_copy.xy_pygame()
-        for obs in self.hamiltonian.simple_hamiltonian:
-            target = obs.get_robot_target_pos().xy_pygame()
-            pygame.draw.line(screen, constants.DARK_GREEN, prev, target)
-            prev = target
-
-    def draw_self(self, screen):
-        rot_image = pygame.transform.rotate(self.__image, -(90 - self.pos.angle))
-        rect = rot_image.get_rect()
-        rect.center = self.pos.xy_pygame()
-        screen.blit(rot_image, rect)
-
-    def draw_historic_path(self, screen):
-        for dot in self.path_hist:
-            pygame.draw.circle(screen, constants.BLACK, dot, 2)
-
-    def draw(self, screen):
-        self.draw_self(screen)
-        self.draw_simple_hamiltonian_path(screen)
-        self.draw_historic_path(screen)
 
     def update(self):
         if len(self.path_hist) == 0 or self.pos.xy_pygame() != self.path_hist[-1]:
