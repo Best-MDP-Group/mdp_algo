@@ -35,4 +35,4 @@ def get_path():
     return jsonify(message_to_rpi)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
