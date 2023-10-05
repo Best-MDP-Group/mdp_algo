@@ -4,15 +4,16 @@ from robot.direction import Direction
 from robot.position import Position, RobotPosition
 
 class TurnCommand(Command):
+    ROBOT_SPEED_PER_SECOND = 100
     SMALL_TURN_TIME = 10
     MEDIUM_TURN_TIME = 20
     LARGE_TURN_TIME = 30
 
     def __init__(self, type_of_turn, left, right, reverse):
         turn_time = {
-            TurnType.SMALL: TurnCommand.SMALL_TURN_TIME,
-            TurnType.MEDIUM: TurnCommand.MEDIUM_TURN_TIME,
-            TurnType.LARGE: TurnCommand.LARGE_TURN_TIME
+            TurnType.SMALL: TurnCommand.SMALL_TURN_TIME / TurnCommand.ROBOT_SPEED_PER_SECOND,
+            TurnType.MEDIUM: TurnCommand.MEDIUM_TURN_TIME / TurnCommand.ROBOT_SPEED_PER_SECOND,
+            TurnType.LARGE: TurnCommand.LARGE_TURN_TIME / TurnCommand.ROBOT_SPEED_PER_SECOND
         }
         super().__init__(turn_time[type_of_turn])
         self.type_of_turn = type_of_turn
@@ -21,7 +22,7 @@ class TurnCommand(Command):
         self.reverse = reverse
 
     def __str__(self):
-        return f"TurnCommand:{self.type_of_turn}, rev={self.reverse}, left={self.left}, right={self.right})"
+        return f"TurnCommand:{self.type_of_turn}, rev={self.reverse}, left={self.left}, right={self.right}, time={self.time})"
 
     def process_one_tick(self, robot):
         if self.total_ticks == 0:

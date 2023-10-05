@@ -10,7 +10,7 @@ from grid import Grid
 from obstacle import Obstacle
 from path_finding.a_star import a_star
 import constants
-
+import matplotlib.pyplot as plt
 
 class Hamiltonian:
 
@@ -19,6 +19,7 @@ class Hamiltonian:
         self.grid = grid
         self.path = tuple()
         self.commands = deque()
+        self.all_paths = {}
 
     def get_path(self):
         return self.path
@@ -26,7 +27,7 @@ class Hamiltonian:
     def compute_path(self) -> Tuple[Obstacle]:
         perms = list(itertools.permutations(self.grid.obstacles))
 
-        def calc_distance(path):
+        def calc_distance(path,manhattan):
             
             # Checks if Robot must turn Left or Right depending on the Target Position
             def check_turn(robot_pos, target_pos):
@@ -86,21 +87,46 @@ class Hamiltonian:
                 else:
                     multiplier = get_weight(path[i - 1].target, path[i].target, False)
 
-                distance += multiplier * euclidean_distance(targets[i][0], targets[i][1], targets[i + 1][0], targets[i + 1][1])
-                print(f"Multiplier for {targets[i]} to {targets[i + 1]} is {multiplier}")
-                print(f"Distance from {targets[i]} to {targets[i + 1]} is {euclidean_distance(targets[i][0], targets[i][1], targets[i + 1][0], targets[i + 1][1])}")
-            
-            print(f"Distance for {path} is {distance}")
+                if manhattan:
+                    distance += multiplier * manhattan_distance(targets[i][0], targets[i][1], targets[i + 1][0], targets[i + 1][1])
+                else:
+                    distance += multiplier * euclidean_distance(targets[i][0], targets[i][1], targets[i + 1][0], targets[i + 1][1])
+                # print(f"Multiplier for {targets[i]} to {targets[i + 1]} is {multiplier}")
+                # print(f"Distance from {targets[i]} to {targets[i + 1]} is {euclidean_distance(targets[i][0], targets[i][1], targets[i + 1][0], targets[i + 1][1])}")
+
             return distance
 
         print("Getting distance for every permutation")
-        
-        simple = min(perms, key=calc_distance)
+
+        # save the distance for each perm in all_paths
+        for perm in perms:
+            distance = calc_distance(perm,True)
+            self.all_paths[perm] = distance
+
+        # get minimum distance from all_paths and store the path in simple
+        simple = min(self.all_paths, key=self.all_paths.get)
+        # simple = min(perms, key=calc_distance)
         
         print("Found Hamiltonian path\n")
+        print([x.number for x in simple])
 
         for ob in simple:
             print(f"\tObstacle {ob.number} at {ob.position.xy()} -> Robot should go to {ob.target.xy()}")
+
+        distances = []
+        paths = []
+
+        # sort self.all_paths by its value
+        paths, distances = zip(*sorted(self.all_paths.items(), key=lambda item: item[1]))
+
+        paths = [str([y.number for y in x]) for x in paths]
+        print(distances[0],paths[0])
+        plt.plot(paths[:5], distances[:5])
+        # label the y axis as distance and the x axis as path
+        plt.ylabel("Distance")
+        plt.xlabel("Path")
+
+        plt.show()
 
         return simple
 
@@ -172,8 +198,27 @@ class Hamiltonian:
         if len(self.commands) == 0:
             print("No path found.")
             return
-        for command in self.commands:
-            print(f"{command}")
 
+        total_time = 0
+        no_straights = 0
+        no_turns = 0
+        no_scans = 0
+        for command in self.commands:
+            total_time += command.time
+            if isinstance(command, StraightCommand):
+                no_straights += 1
+            elif isinstance(command, TurnCommand):
+                no_turns += 1
+            elif isinstance(command, ScanCommand):
+                no_scans += 1
+            print(f"{command}")
+        
+        print()
+        print("-" * 40)
+        print(f"Total time: {total_time}")
+        print(f"Number of Commands : {len(self.commands)}")
+        print(f"Number of Straights : {no_straights}")
+        print(f"Number of Turns : {no_turns}")
+        print(f"Number of Scans : {no_scans}")
         print("-" * 40)
         print()
