@@ -11,6 +11,47 @@ from robot.turn_type import TurnType
 from path_finding.hamiltonian import Hamiltonian
 from robot.direction import Direction
 
+def get_commands(commands):
+  output = []
+  
+  for command in commands:
+    output.append(command.rpi_message())
+
+  return ','.join(output)
+
+def get_atomic_commands(commands):
+  output = []
+  
+  for command in commands:
+    # if the command is of type TurnCommand, and the type_of_turn is SMALL, then we need to split it into 4 commands
+    if isinstance(command, TurnCommand) and command.type_of_turn == TurnType.SMALL:
+      if (command.rpi_message() == "JF000"):
+
+        output.append("RF034")
+        output.append("LF034")
+        output.append("SF010")
+      if (command.rpi_message() == "KF000"):
+        
+        output.append("LF034")
+        output.append("RF034")
+        output.append("SF010")
+      if (command.rpi_message() == "JB000"):
+        
+        output.append("RB034")
+        output.append("LB034")
+        output.append("SB010")
+      if (command.rpi_message() == "KB000"):
+        
+        output.append("LB034")
+        output.append("RB034")
+        output.append("SB010")
+    
+    else:
+      output.append(command.rpi_message())
+
+    
+  return ','.join(output)
+
 def get_command_for_movement(command):
     if isinstance(command, StraightCommand):
         if command.dist > 0:
@@ -52,6 +93,11 @@ def run_algo(robot,  grid, step_size = 10):
     hamiltonian = Hamiltonian(robot,grid)
     hamiltonian.get_path()
     commands = hamiltonian.commands
+    commands_for_rpi = get_commands(commands)
+    commands_for_rpi_atomic = get_atomic_commands(commands)
+    print(commands_for_rpi)
+    print('-' * 40)
+    print(commands_for_rpi_atomic)
     clock = pygame.time.Clock()
     visitedSquares = constants.INIT_VISITED
     robot.setCurrentPos(0, 0, Direction.TOP)

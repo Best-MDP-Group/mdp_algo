@@ -38,11 +38,7 @@ case2 = '''{
   "cat": "obstacles",
   "value": {
     "obstacles": [
-      {"x": 2, "y": 18, "id": 1, "d": 4},
-      {"x": 6, "y": 12, "id": 2, "d": 0},
-      {"x": 8, "y": 5, "id": 3, "d": 2},
-      {"x": 15, "y": 16, "id": 4, "d": 4},
-      {"x": 16, "y": 1, "id": 5, "d": 6}
+      {"x": 5, "y": 5, "id": 1, "d": 4}
     ],
     "mode": "0"
   }
@@ -64,7 +60,7 @@ case3 = '''{
 }'''
 
 
-result = jsonParse.parse_json(case1)
+result = jsonParse.parse_json(case2)
 
 obstacles = jsonParse.convert_json(screen, result)
 
