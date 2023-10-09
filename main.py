@@ -44,50 +44,6 @@ running = True
 screen = pygame.display.set_mode((constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT), pygame.RESIZABLE)
 pygame.display.set_caption("Simulation")
 
-# # Create a Grid object
-# obstacles = [obstacle.Obstacle(screen,Position(50,50, Direction.TOP),1), 
-# obstacle.Obstacle(screen,Position(90,90, Direction.BOTTOM),2),
-# obstacle.Obstacle(screen,Position(40,180, Direction.BOTTOM),3),
-# obstacle.Obstacle(screen,Position(120,150, Direction.RIGHT),4),
-# obstacle.Obstacle(screen,Position(150,40, Direction.LEFT),5), 
-# obstacle.Obstacle(screen,Position(190,190, Direction.LEFT),6) ]
-
-# test1 = '{"cat":"obstacles","value":{"obstacles":[{"x":7,"y":14,"id":1,"d":0},{"x":15,"y":8,"id":2,"d":6},{"x":4,"y":3,"id":3,"d":2},{"x":9,"y":7,"id":4,"d":4}],"mode":"0"}}'
-
-# test2 = '''{
-#   "cat": "obstacles",
-#   "value": {
-#     "obstacles": [
-#       {"x": 1, "y": 17, "id": 1, "d": 4},
-#       {"x": 6, "y": 1, "id": 2, "d": 0},
-#       {"x": 14, "y": 3, "id": 3, "d": 6},
-#       {"x": 10, "y": 12, "id": 4, "d": 2},
-#       {"x": 17, "y": 15, "id": 5, "d": 6},
-#       {"x": 4, "y": 8, "id": 6, "d": 4},
-#       {"x": 19, "y": 19, "id": 7, "d": 6},
-#       {"x": 12, "y": 10, "id": 8, "d": 6}
-#     ],
-#     "mode": "0"
-#   }
-# }
-# '''
-
-# test3 = '''{
-#   "cat": "obstacles",
-#   "value": {
-#     "obstacles": [
-#       {"x": 5, "y": 9, "id": 1, "d": 4},
-#       {"x": 7, "y": 14, "id": 2, "d": 6},
-#       {"x": 12, "y": 9, "id": 3, "d": 2},
-#       {"x": 15, "y": 15, "id": 4, "d": 4},
-#       {"x": 15, "y": 4, "id": 5, "d": 6}
-#     ],
-#     "mode": "0"
-#   }
-# }
-# '''
-
-
 result = jsonParse.parse_json(obs)
 obstacles = jsonParse.convert_json(screen, result)
 
@@ -98,26 +54,11 @@ button_list = constants.BUTTON_LIST
 grid = grid.Grid(screen,obstacles)
 robot = robot.Robot(screen,grid, 0, 0)
 print()
-# hamiltonian = hamiltonian.Hamiltonian(robot,grid)
-robot.setCurrentPos(0, 0, Direction.TOP)
 
-
-# hamiltonian.get_path()
 robot.setCurrentPos(constants.ROBOT_SAFETY_DISTANCE, constants.ROBOT_SAFETY_DISTANCE, Direction.TOP)
 hamiltonian = hamiltonian.Hamiltonian(robot,grid)
 hamiltonian.get_path()
 
-# RF090: RF090 + SB005
-# RB090: RB090 + SB005
-
-# LF090: LF090 + SB005
-# LB090: LB090 + SB005
-
-# JF000 : RF034 + LF034 + SF010
-# JB000 : RB034 + LB034 + SB015
-
-# KF000 : LF034 + RF034 + SF010
-# KB000 : LB034 + RB034 + SB015
 
 def chain_commands(commands):
     chained = []
