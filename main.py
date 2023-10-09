@@ -1,7 +1,7 @@
 import pygame
 import grid 
 import constants
-import jsonParse
+import utils
 import obstacle
 import math
 import socket
@@ -38,121 +38,26 @@ obs = data.decode('utf-8')
 print(f"Received: {data}")
 
 pygame.init()
-# Set up fonts
 font = pygame.font.Font(None, 36)
 running = True
 screen = pygame.display.set_mode((constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT), pygame.RESIZABLE)
+button_list = constants.BUTTON_LIST
 pygame.display.set_caption("Simulation")
 
-result = jsonParse.parse_json(obs)
-obstacles = jsonParse.convert_json(screen, result)
-
-#buttons
-button_list = constants.BUTTON_LIST
-
+result = utils.parse_json(obs)
+obstacles = utils.convert_json(screen, result)
 
 grid = grid.Grid(screen,obstacles)
 robot = robot.Robot(screen,grid, 0, 0)
-print()
 
 robot.setCurrentPos(constants.ROBOT_SAFETY_DISTANCE, constants.ROBOT_SAFETY_DISTANCE, Direction.TOP)
 hamiltonian = hamiltonian.Hamiltonian(robot,grid)
 hamiltonian.get_path()
 
+commands_str = utils.get_commands(hamiltonian.commands)
+atomic_commands_str = utils.get_atomic_commands(hamiltonian.commands)
+chained_atomic_commands_str = utils.chain_commands(atomic_commands_str.split(','))
 
-def chain_commands(commands):
-    chained = []
-    i = 0
-
-    while i < len(commands):
-        command = commands[i]
-
-        if command.startswith('SF') or command.startswith('SB'):
-            direction = 1 if command[1] == 'F' else -1
-            total_value = direction * int(command[2:])
-            i += 1
-
-            while i < len(commands) and (commands[i].startswith('SF') or commands[i].startswith('SB')):
-                next_direction = 1 if commands[i][1] == 'F' else -1
-                total_value += next_direction * int(commands[i][2:])
-                i += 1
-
-            prefix = 'SF' if total_value > 0 else 'SB'
-
-            # If total value is 2 digits, we add a 0 in front of it, if total value is 1 digit, we add two 0s in front of it
-
-            if abs(total_value) < 10:
-                chained_command = f"{prefix}00{abs(total_value)}"
-            elif abs(total_value) < 100:
-                chained_command = f"{prefix}0{abs(total_value)}"
-            else:
-                chained_command = f"{prefix}{abs(total_value)}"
-            
-            # If the total_value is 0, we skip adding it
-            if total_value == 0:
-                continue
-            
-            chained.append(chained_command)
-        else:
-            chained.append(command)
-            i += 1
-
-    return ','.join(chained)
-
-def get_commands(commands):
-  output = []
-  
-  for command in commands:
-    output.append(command.rpi_message())
-
-  return ','.join(output)
-
-def get_atomic_commands(commands):
-  output = []
-  
-  for command in commands:
-    # if the command is of type TurnCommand, and the type_of_turn is SMALL, then we need to split it into 4 commands
-    if isinstance(command, TurnCommand):
-        if (command.rpi_message() == "RF090"):
-            output.append("RF090")
-            output.append("SB005")
-        if (command.rpi_message() == "RB090"):
-            output.append("RB090")
-            output.append("SB005")
-        if (command.rpi_message() == "LF090"):
-            output.append("LF090")
-            output.append("SB005")
-        if (command.rpi_message() == "LB090"):
-            output.append("LB090")
-            output.append("SB005")     
-        if (command.rpi_message() == "JF000"):
-            output.append("RF034")
-            output.append("LF034")
-            output.append("SF010")
-        if (command.rpi_message() == "KF000"):
-            output.append("LF034")
-            output.append("RF034")
-            output.append("SF010")
-        if (command.rpi_message() == "JB000"):
-            output.append("RB034")
-            output.append("LB034")
-            output.append("SB015")
-        if (command.rpi_message() == "KB000"):
-            output.append("LB034")
-            output.append("RB034")
-            output.append("SB015")
-    
-    else:
-      output.append(command.rpi_message())
-
-    
-  return ','.join(output)
-
-commands_str = get_commands(hamiltonian.commands)
-atomic_commands_str = get_atomic_commands(hamiltonian.commands)
-chained_atomic_commands_str = chain_commands(atomic_commands_str.split(','))
-
-# "target": "AND"
 rpi_commands = {
   "target": "STM", 
   "cat": "path",
@@ -183,16 +88,10 @@ while running:
                     constants.START_BUTTON['y'] <= mouse_y <= constants.START_BUTTON['y'] + constants.START_BUTTON['height']):
                     run_algo(robot, grid)
                 
-
     screen.fill((224, 235, 235))
     for button in button_list:
         draw_button(screen, button['path'], button['x'], button['y'], button['width'], button['height'], (169,169,169),(128, 128, 128))
     draw_text_button(screen, constants.START_BUTTON)
-
-    # if count == 0:
-        
-        # robot.draw_robot()
-        # count = run_algo(robot, hamiltonian.commands, grid, count)
 
     grid.draw_grid(visitedSquares)
     robot.draw_robot()
