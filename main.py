@@ -140,9 +140,9 @@ def chain_commands(commands):
 
             # If total value is 2 digits, we add a 0 in front of it, if total value is 1 digit, we add two 0s in front of it
 
-            if total_value < 10:
+            if abs(total_value) < 10:
                 chained_command = f"{prefix}00{abs(total_value)}"
-            elif total_value < 100:
+            elif abs(total_value) < 100:
                 chained_command = f"{prefix}0{abs(total_value)}"
             else:
                 chained_command = f"{prefix}{abs(total_value)}"
