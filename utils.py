@@ -4,6 +4,7 @@ import obstacle
 import constants
 from robot.position import Position, RobotPosition
 from robot.direction import Direction
+from robot.commands import TurnCommand
 
 # parse JSON file
 def parse_json(json_str):
