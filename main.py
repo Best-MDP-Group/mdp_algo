@@ -15,11 +15,9 @@ from run_algo import run_algo
 import json
 
 
-# Send the Commands to RPI
 # RPI Connection
-# Configure the client
-server_ip = "192.168.31.31"  # Replace with your PC's IP address
-server_port = 8001  # Use the same port number as on your PC
+server_ip = "192.168.31.31"
+server_port = 8001  
 
 # Create a socket
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -28,15 +26,17 @@ client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 print("Waiting to Connect to RPI")
 client_socket.connect((server_ip, server_port))
 
-print("Connected")
+print("Connected to RPI")
 
+# Receiving data from RPI
 data = client_socket.recv(2048)
-
 print(f"Received: {data.decode('utf-8')}")
 
+# Decoding data from RPI
 obs = data.decode('utf-8')
 print(f"Received: {data}")
 
+# Initialising Simulator to visualise Obstacles received
 pygame.init()
 font = pygame.font.Font(None, 36)
 running = True
@@ -44,20 +44,31 @@ screen = pygame.display.set_mode((constants.SCREEN_WIDTH, constants.SCREEN_HEIGH
 button_list = constants.BUTTON_LIST
 pygame.display.set_caption("Simulation")
 
+# Parsing obstacle data and initialising Obstacle objects
 result = utils.parse_json(obs)
 obstacles = utils.convert_json(screen, result)
 
+# Initialising Grid and Robot instances
 grid = grid.Grid(screen,obstacles)
 robot = robot.Robot(screen,grid, 0, 0)
 
+# Set Robot position according to safety margins
 robot.setCurrentPos(constants.ROBOT_SAFETY_DISTANCE, constants.ROBOT_SAFETY_DISTANCE, Direction.TOP)
+
+# Initialise Hamiltonian class and get shortest path
 hamiltonian = hamiltonian.Hamiltonian(robot,grid)
 hamiltonian.get_path()
 
+# Parse commands to be sent to RPI as command strings
 commands_str = utils.get_commands(hamiltonian.commands)
+
+# Splitting of S-Turn for STM
 atomic_commands_str = utils.get_atomic_commands(hamiltonian.commands)
+
+# Chaining consecutive Straights to improve efficiency
 chained_atomic_commands_str = utils.chain_commands(atomic_commands_str.split(','))
 
+# Converting commands to JSON format for RPI
 rpi_commands = {
   "target": "STM", 
   "cat": "path",
@@ -67,15 +78,13 @@ rpi_commands = {
 
 }
 
+# Sending commands to RPI
 rpi_commands_json = json.dumps(rpi_commands)
-
 print(rpi_commands)
-
 client_socket.send(rpi_commands_json.encode('utf-8'))
 
-robot.setCurrentPos(0, 0, Direction.TOP)
 
-
+# Start loop for Pygame Instance
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
