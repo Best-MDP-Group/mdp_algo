@@ -112,20 +112,20 @@ def get_atomic_commands(commands):
             output.append("LB090")
             output.append("SB003")     
         if (command.rpi_message() == "JF000"):
-            output.append("RF034")
-            output.append("LF034")
+            output.append("RF030")
+            output.append("LF030")
             output.append("SF008")
         if (command.rpi_message() == "KF000"):
-            output.append("LF034")
-            output.append("RF034")
+            output.append("LF030")
+            output.append("RF030")
             output.append("SF008")
         if (command.rpi_message() == "JB000"):
-            output.append("RB034")
-            output.append("LB034")
+            output.append("RB030")
+            output.append("LB030")
             output.append("SB009")
         if (command.rpi_message() == "KB000"):
-            output.append("LB034")
-            output.append("RB034")
+            output.append("LB030")
+            output.append("RB030")
             output.append("SB009")
     
     else:
