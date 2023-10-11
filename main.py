@@ -11,6 +11,7 @@ from robot.direction import Direction
 from buttons import draw_button, handle_button_click, visitedSquares, draw_text_button
 from run_algo import run_algo
 
+
 pygame.init()
 # Set up fonts
 font = pygame.font.Font(None, 36)
@@ -38,7 +39,10 @@ case2 = '''{
   "cat": "obstacles",
   "value": {
     "obstacles": [
-      {"x": 5, "y": 5, "id": 1, "d": 4}
+      {"x": 2, "y": 7, "id": 1, "d": 4},
+      {"x": 14, "y": 7, "id": 1, "d": 6},
+      {"x": 14, "y": 18, "id": 1, "d": 4},
+      {"x": 2, "y": 18, "id": 1, "d": 2}
     ],
     "mode": "0"
   }
