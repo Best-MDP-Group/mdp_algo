@@ -101,32 +101,32 @@ def get_atomic_commands(commands):
     if isinstance(command, TurnCommand):
         if (command.rpi_message() == "RF090"):
             output.append("RF090")
-            output.append("SB005")
+            output.append("SB003")
         if (command.rpi_message() == "RB090"):
             output.append("RB090")
-            output.append("SB005")
+            output.append("SB003")
         if (command.rpi_message() == "LF090"):
             output.append("LF090")
-            output.append("SB005")
+            output.append("SB003")
         if (command.rpi_message() == "LB090"):
             output.append("LB090")
-            output.append("SB005")     
+            output.append("SB003")     
         if (command.rpi_message() == "JF000"):
             output.append("RF034")
             output.append("LF034")
-            output.append("SF010")
+            output.append("SF008")
         if (command.rpi_message() == "KF000"):
             output.append("LF034")
             output.append("RF034")
-            output.append("SF010")
+            output.append("SF008")
         if (command.rpi_message() == "JB000"):
             output.append("RB034")
             output.append("LB034")
-            output.append("SB015")
+            output.append("SB009")
         if (command.rpi_message() == "KB000"):
             output.append("LB034")
             output.append("RB034")
-            output.append("SB015")
+            output.append("SB009")
     
     else:
       output.append(command.rpi_message())
