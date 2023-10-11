@@ -100,7 +100,7 @@ class Hamiltonian:
 
         # save the distance for each perm in all_paths
         for perm in perms:
-            distance = calc_distance(perm,True)
+            distance = calc_distance(perm,False)
             self.all_paths[perm] = distance
 
         # get minimum distance from all_paths and store the path in simple
