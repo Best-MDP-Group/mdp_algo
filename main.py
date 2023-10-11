@@ -83,7 +83,7 @@ rpi_commands_json = json.dumps(rpi_commands)
 print(rpi_commands)
 client_socket.send(rpi_commands_json.encode('utf-8'))
 
-
+robot.setCurrentPos(0, 0, Direction.TOP)
 # Start loop for Pygame Instance
 while running:
     for event in pygame.event.get():
