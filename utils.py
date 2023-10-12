@@ -96,21 +96,58 @@ def get_commands(commands):
 def get_atomic_commands(commands):
   output = []
   
+# Offsets (Outdoor)
+
+# RF (SB007) Radius: 15
+# LF (SB003/4) Radius: 6
+# RB (SB007/8) Radius: 5
+# LB (SB008) Radius: 7
+
+# Offsets (Indoor) LOUNGE
+
+# RF (SB006) Radius: 10.75
+# LF (SB007) Radius: 13
+# RB (SB006) Radius: 7.5
+# LB (SB002) Radius: 8.25
+
   for command in commands:
     # if the command is of type TurnCommand, and the type_of_turn is SMALL, then we need to split it into 4 commands
     if isinstance(command, TurnCommand):
         if (command.rpi_message() == "RF090"):
             output.append("RF090")
+
+            # outdoor
             output.append("SB007")
+
+            # indoor
+            # output.append("SB006")
+
         if (command.rpi_message() == "RB090"):
             output.append("RB090")
+
+            # outdoor 
             output.append("SB007")
+
+            # indoor
+            # output.append("SB006")
+
         if (command.rpi_message() == "LF090"):
             output.append("LF090")
+
+            # outdoor
             output.append("SB003")
+
+            # indoor
+            # output.append("SB007")
         if (command.rpi_message() == "LB090"):
             output.append("LB090")
-            output.append("SB008")     
+            
+            # outdoor
+            output.append("SB008")
+
+            # indoor
+            # output.append("SB002")
+            #      
         if (command.rpi_message() == "JF000"):
             output.append("RF030")
             output.append("LF030")
@@ -135,22 +172,20 @@ def get_atomic_commands(commands):
   return ','.join(output)
 
 
-
 def angleCorrection(commands):
     output = []
     count = 0
 
     for command in commands:
         # if the command is of type TurnCommand, and the type_of_turn is SMALL, then we need to split it into 4 commands
-        if isinstance(command, TurnCommand):
+        if command[0:2] == 'RF' or command[0:2] == 'LF':
             count += 1
-        
+
+        output.append(command)
+
         if count == 4:
             output.append("LF005")
             output.append("SB003")
             count = 0
-
-        else:
-            output.append(command.rpi_message())
 
     return ','.join(output)

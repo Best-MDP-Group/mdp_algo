@@ -89,7 +89,7 @@ class Hamiltonian:
                 else:
                     multiplier = get_weight(path[i - 1].target, path[i].target, False)
 
-                distance += multiplier * euclidean_distance(targets[i][0], targets[i][1], targets[i + 1][0], targets[i + 1][1])
+                distance += multiplier * manhattan_distance(targets[i][0], targets[i][1], targets[i + 1][0], targets[i + 1][1])
             #     print(f"Multiplier for {targets[i]} to {targets[i + 1]} is {multiplier}")
             #     print(f"Euclidean Distance from {targets[i]} to {targets[i + 1]} is {euclidean_distance(targets[i][0], targets[i][1], targets[i + 1][0], targets[i + 1][1])}")
             

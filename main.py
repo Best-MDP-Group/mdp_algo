@@ -65,11 +65,10 @@ commands_str = utils.get_commands(hamiltonian.commands)
 # Splitting of S-Turn for STM
 atomic_commands_str = utils.get_atomic_commands(hamiltonian.commands)
 
+# corrected_commands_str = utils.angleCorrection(atomic_commands_str.split(','))
+
 # Chaining consecutive Straights to improve efficiency
 chained_atomic_commands_str = utils.chain_commands(atomic_commands_str.split(','))
-
-# add angle correctoin
-corrected_commands_str = utils.angleCorrection(chained_atomic_commands_str)
 
 # Converting commands to JSON format for RPI
 rpi_commands = {
