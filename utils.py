@@ -117,37 +117,37 @@ def get_atomic_commands(commands):
             output.append("RF090")
 
             # outdoor
-            output.append("SB007")
+            # output.append("SB007")
 
             # indoor
-            # output.append("SB006")
+            output.append("SB006")
 
         if (command.rpi_message() == "RB090"):
             output.append("RB090")
 
             # outdoor 
-            output.append("SB007")
+            # output.append("SB007")
 
             # indoor
-            # output.append("SB006")
+            output.append("SB006")
 
         if (command.rpi_message() == "LF090"):
             output.append("LF090")
 
             # outdoor
-            output.append("SB003")
+            # output.append("SB003")
 
             # indoor
-            # output.append("SB007")
+            output.append("SB007")
         if (command.rpi_message() == "LB090"):
             output.append("LB090")
             
             # outdoor
-            output.append("SB008")
+            # output.append("SB008")
 
             # indoor
-            # output.append("SB002")
-            #      
+            output.append("SB002")
+
         if (command.rpi_message() == "JF000"):
             output.append("RF030")
             output.append("LF030")
