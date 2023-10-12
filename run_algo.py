@@ -49,7 +49,7 @@ def chain_commands(commands):
             chained.append(command)
             i += 1
 
-    return ','.join(chained)
+    return chained
 
 def get_commands(commands):
   output = []
@@ -112,6 +112,24 @@ def get_atomic_commands(commands):
     
   return ','.join(output)
 
+def angleCorrection(commands):
+    output = []
+    count = 0
+
+    for command in commands:
+        # if the command is of type TurnCommand, and the type_of_turn is SMALL, then we need to split it into 4 commands
+        if command[0] == 'R' or command[0] == 'L':
+            count += 1
+
+        output.append(command)
+
+        if count == 4:
+            output.append("LF005")
+            output.append("SB003")
+            count = 0
+
+    return ','.join(output)
+
 def get_command_for_movement(command):
     if isinstance(command, StraightCommand):
         if command.dist > 0:
@@ -156,11 +174,17 @@ def run_algo(robot,  grid, step_size = 10):
     commands_for_rpi = get_commands(commands)
     commands_for_rpi_atomic = get_atomic_commands(commands)
     chained_commands = chain_commands(commands_for_rpi_atomic.split(','))
+    commands_corrected = angleCorrection(chained_commands)
+    chained_commands_corrected = chain_commands(commands_corrected.split(','))
+    chained_commands_corrected = ','.join(chained_commands_corrected)
+
     print(commands_for_rpi,"Default Commands")
     print('-' * 40,)
     print(commands_for_rpi_atomic, "Atomic Commands")
     print('-' * 40)
     print(chained_commands, "Chained Consecutive Straights")
+    print('-' * 40)
+    print(chained_commands_corrected, "Corrected Commands")
     clock = pygame.time.Clock()
     visitedSquares = constants.INIT_VISITED
     robot.setCurrentPos(0, 0, Direction.TOP)
