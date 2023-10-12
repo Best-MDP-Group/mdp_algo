@@ -133,3 +133,24 @@ def get_atomic_commands(commands):
 
     
   return ','.join(output)
+
+
+
+def angleCorrection(commands):
+    output = []
+    count = 0
+
+    for command in commands:
+        # if the command is of type TurnCommand, and the type_of_turn is SMALL, then we need to split it into 4 commands
+        if isinstance(command, TurnCommand):
+            count += 1
+        
+        if count == 4:
+            output.append("LF005")
+            output.append("SB003")
+            count = 0
+
+        else:
+            output.append(command.rpi_message())
+
+    return ','.join(output)
