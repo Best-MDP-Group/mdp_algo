@@ -126,7 +126,7 @@ def get_atomic_commands(commands):
             output.append("RB090")
 
             # outdoor 
-            output.append("SB007")
+            output.append("SB006")
 
             # indoor
             # output.append("SB006")
@@ -135,7 +135,7 @@ def get_atomic_commands(commands):
             output.append("LF090")
 
             # outdoor
-            output.append("SB003")
+            output.append("SB007")
 
             # indoor
             # output.append("SB007")
@@ -143,7 +143,7 @@ def get_atomic_commands(commands):
             output.append("LB090")
             
             # outdoor
-            output.append("SB008")
+            output.append("SB002")
 
             # indoor
             # output.append("SB002")
