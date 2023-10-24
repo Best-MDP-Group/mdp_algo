@@ -108,10 +108,10 @@ class Hamiltonian:
         # simple = min(perms, key=calc_distance)
         
         print("Found Hamiltonian path\n")
-        print([x.number for x in simple])
+        # print([x.number for x in simple])
 
         for ob in simple:
-            print(f"\tObstacle {ob.number} at {ob.position.xy()} -> Robot should go to {ob.target.xy()}")
+            print(f"Obstacle {ob.number} at {ob.position.xy()} -> Robot should go to {ob.target.xy()}")
 
         distances = []
         paths = []
@@ -120,7 +120,12 @@ class Hamiltonian:
         paths, distances = zip(*sorted(self.all_paths.items(), key=lambda item: item[1]))
 
         paths = [str([y.number for y in x]) for x in paths]
-        print(distances[0],paths[0])
+        
+        
+        # print(distances[0],paths[0])
+
+        print("\nDistance: ", distances[0])
+        
         plt.plot(paths[:5], distances[:5])
         # label the y axis as distance and the x axis as path
         plt.ylabel("Distance")
